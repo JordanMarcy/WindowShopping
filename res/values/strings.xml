@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WindowShopping</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="button_photo">Take Photo</string>
+    <string name="button_wishlist">View Wishlist</string>
+    <string name="button_barcode">Scan Barcode</string>
+
+</resources>
