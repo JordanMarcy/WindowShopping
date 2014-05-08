@@ -7,5 +7,10 @@
     <string name="button_photo">Take Photo</string>
     <string name="button_wishlist">View Wishlist</string>
     <string name="button_barcode">Scan Barcode</string>
+    <string name="title_activity_photo">PhotoActivity</string>
+    <string name="search">Search Image</string>
+    <string name="title_activity_wishlist">WishlistActivity</string>
+    <string name="title_activity_results">ResultsActivity</string>
+    <string name="title_activity_website">WebsiteActivity</string>
 
 </resources>

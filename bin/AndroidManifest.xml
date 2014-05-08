@@ -4,6 +4,14 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="18" />
@@ -21,6 +29,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.cs194.windowshopping.PhotoActivity" >
+        </activity>
+        <activity
+            android:name="com.cs194.windowshopping.WishlistActivity"
+            android:label="@string/title_activity_wishlist" >
+        </activity>
+        <activity
+            android:name="com.cs194.windowshopping.ResultsActivity"
+            android:label="@string/title_activity_results" >
         </activity>
     </application>
 
