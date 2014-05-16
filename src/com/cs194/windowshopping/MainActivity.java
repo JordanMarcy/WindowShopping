@@ -12,6 +12,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
     }
 
 
@@ -36,7 +37,8 @@ public class MainActivity extends Activity {
     
     /*Called when a user clicks the View Wishlist button*/
     public void gotoWishlist(View view) {
-    	
+    	Intent intent = new Intent(this, WishlistActivity.class);
+    	startActivity(intent);
     }
     
     /*Called when a user clicks the Scan Barcode button*/
