@@ -1,9 +1,11 @@
-import com.ECS.client.jax.AWSECommerceService;
-import com.ECS.client.jax.AWSECommerceServicePortType;
-import com.ECS.client.jax.Item;
-import com.ECS.client.jax.ItemLookup;
-import com.ECS.client.jax.ItemLookupRequest;
-import com.ECS.client.jax.ItemLookupResponse;
+package com.cs194.windowshopping;
+
+//import com.ECS.client.jax.AWSECommerceService;
+//import com.ECS.client.jax.AWSECommerceServicePortType;
+//import com.ECS.client.jax.Item;
+//import com.ECS.client.jax.ItemLookup;
+//import com.ECS.client.jax.ItemLookupRequest;
+//import com.ECS.client.jax.ItemLookupResponse;
 
 
 //import org.apache.http.HttpEntity;
@@ -100,20 +102,20 @@ public class ProductSearchHit {
 //		return picture;
 //	}
 	
-	private String getImageURL() {
-		AWSECommerceService service = new AWSECommerceService();
-		AWSECommerceServicePortType port = service.getAWSECommerceServicePort();
-		
-		ItemLookupRequest request = new ItemLookupRequest();
-		request.setIdType("UPC");
-		request.getItemId().add(upc);
-		request.getResponseGroup().add("Images");
-		
-		ItemLookup lookup = new ItemLookup();
-		lookup.getRequest().add(request);
-		
-		ItemLookupResponse response = port.itemLookup(lookup);
-		Item item = response.getItems().get(0).getItem().get(0);
-		return item.getSmallImage().getURL();
-	}
+//	private String getImageURL() {
+//		AWSECommerceService service = new AWSECommerceService();
+//		AWSECommerceServicePortType port = service.getAWSECommerceServicePort();
+//		
+//		ItemLookupRequest request = new ItemLookupRequest();
+//		request.setIdType("UPC");
+//		request.getItemId().add(upc);
+//		request.getResponseGroup().add("Images");
+//		
+//		ItemLookup lookup = new ItemLookup();
+//		lookup.getRequest().add(request);
+//		
+//		ItemLookupResponse response = port.itemLookup(lookup);
+//		Item item = response.getItems().get(0).getItem().get(0);
+//		return item.getSmallImage().getURL();
+//	}
 }

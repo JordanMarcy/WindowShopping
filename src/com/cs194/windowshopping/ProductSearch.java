@@ -1,3 +1,4 @@
+package com.cs194.windowshopping;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +16,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +61,8 @@ public class ProductSearch {
 	 * @param 	filename	the file location of an image of a product
 	 */
 	public void queryByPicture(String filename) {
-		String keyword = GetKeywordFromImage(filename);
+		//String keyword = GetKeywordFromImage(filename);
+		String keyword = "Macbook Air";
 		findKeywordSearchResults(keyword);
 	}
 	
@@ -116,7 +119,7 @@ public class ProductSearch {
 	}
 	
 	static private String GetKeywordFromImage(String filename) {
-		HttpClient client = HttpClients.createDefault();
+		HttpClient client = new DefaultHttpClient();
 		String token = getCamFindToken(client, filename);
 		return getCamFindKeyword(client, token);
 	}
@@ -140,7 +143,9 @@ public class ProductSearch {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		} catch (NoSuchMethodError e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void parseJSONSearchResults(JSONObject results) {
@@ -182,9 +187,11 @@ public class ProductSearch {
 				JSONObject jsonObj = new JSONObject(str);
 				return jsonObj.getString("token");
 			}
-		} catch (IOException | JSONException e) {
+		} catch (JSONException e) {
 			e.printStackTrace();
-		}		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "";
 	}
 	
@@ -208,8 +215,12 @@ public class ProductSearch {
 						return jsonObj.getString("name");
 				}
 			}
-		} catch (IOException | JSONException | InterruptedException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		return "";

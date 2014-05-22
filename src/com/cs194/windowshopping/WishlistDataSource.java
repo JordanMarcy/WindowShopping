@@ -30,11 +30,11 @@ public class WishlistDataSource {
 		dbHelper.close();
 	}
 	
-	public void addItem(ShoppingItem item) {
+	public void addItem(ProductSearchHit productSearchHit) {
 		ContentValues values = new ContentValues();
-		values.put(MySQLiteHelper.COLUMN_NAME, item.getName());
-		values.put(MySQLiteHelper.COLUMN_PRICE, item.getPrice());
-		values.put(MySQLiteHelper.COLUMN_URL, item.getUrl());
+		values.put(MySQLiteHelper.COLUMN_NAME, productSearchHit.getProductName());
+		values.put(MySQLiteHelper.COLUMN_PRICE, productSearchHit.getPrice());
+		values.put(MySQLiteHelper.COLUMN_URL, productSearchHit.getRetailerName());
 		
 		long insertID = database.insert(MySQLiteHelper.TABLE_WISHLIST, null, values);
 	}
