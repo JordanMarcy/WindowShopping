@@ -18,9 +18,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.jsonplus.JSONArray;
+import org.jsonplus.JSONException;
+import org.jsonplus.JSONObject;
 
 import com.semantics3.api.Products;
 
