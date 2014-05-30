@@ -1,5 +1,19 @@
 package com.cs194.windowshopping;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClients;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 //import com.ECS.client.jax.AWSECommerceService;
 //import com.ECS.client.jax.AWSECommerceServicePortType;
 //import com.ECS.client.jax.Item;
@@ -8,14 +22,6 @@ package com.cs194.windowshopping;
 //import com.ECS.client.jax.ItemLookupResponse;
 
 
-//import org.apache.http.HttpEntity;
-//import org.apache.http.HttpResponse;
-//import org.apache.http.client.HttpClient;
-//import org.apache.http.client.methods.HttpGet;
-//
-//import android.graphics.Bitmap;
-//import android.graphics.BitmapFactory;
-
 /**
  * Contains product details for an query result from <code>ProductSearch</code>.
  * @author Stephen
@@ -23,8 +29,10 @@ package com.cs194.windowshopping;
  */
 public class ProductSearchHit {
 	
-	String price, rating, name, brand, retailer, upc;
-//	Bitmap picture = null;
+	String price, rating, name, brand, upc;
+	ArrayList<Retailer> retailers;
+	
+	Bitmap picture = null;
 	
 	/**
 	 * 
@@ -35,12 +43,12 @@ public class ProductSearchHit {
 	 * @param retailer
 	 */
 	ProductSearchHit(String price, String rating, String name, String brand,
-			String retailer, String upc) {
+			ArrayList<Retailer> retailers, String upc) {
 		this.price = price;
 		this.rating = rating;
 		this.name = name;
 		this.brand = brand;
-		this.retailer = retailer;
+		this.retailers = retailers;
 		this.upc = upc;
 	}
 	
@@ -80,8 +88,12 @@ public class ProductSearchHit {
 	 * Returns the name of the retailer selling the product
 	 * @return retailer's name
 	 */
-	public String getRetailerName() {
-		return retailer;
+	public ArrayList<Retailer> getRetailer() {
+		return retailers;
+	}
+	
+	public Retailer getRetailerByIndex(int i) {
+		return retailers.get(i);
 	}
 	
 	
@@ -89,18 +101,35 @@ public class ProductSearchHit {
 	 * Returns an image of the product.
 	 * @return a bitmap or null if no image is available
 	 */
-//	public Bitmap getImage() {
-//		if(picture == null) {
-//			HttpClient client = HttpClients.createDefault();
-//			HttpGet getRequest = new HttpGet("http://content.hwigroup.net/images/products/xl/155820/3/apple_macbook_pro_retina_mc976na.jpg");
-//			HttpResponse response = client.execute(getRequest);
-//			HttpEntity entity = response.getEntity();
-//			if(entity != null) {
-//				picture = BitmapFactory.decodeStream(entity.getContent());
-//			}
-//		}
-//		return picture;
-//	}
+	public Bitmap getImage() {
+		if(picture == null) {
+			HttpClient client = HttpClients.createDefault();
+			HttpGet getRequest = new HttpGet("http://content.hwigroup.net/images/products/xl/155820/3/apple_macbook_pro_retina_mc976na.jpg");
+			HttpResponse response = null;
+			try {
+				response = client.execute(getRequest);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			HttpEntity entity = response.getEntity();
+			if(entity != null) {
+				try {
+					picture = BitmapFactory.decodeStream(entity.getContent());
+				} catch (IllegalStateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return picture;
+	}
 	
 //	private String getImageURL() {
 //		AWSECommerceService service = new AWSECommerceService();
@@ -118,4 +147,6 @@ public class ProductSearchHit {
 //		Item item = response.getItems().get(0).getItem().get(0);
 //		return item.getSmallImage().getURL();
 //	}
+	
 }
+

@@ -62,7 +62,7 @@ public class ProductSearch {
 	 */
 	public void queryByPicture(String filename) {
 		//String keyword = GetKeywordFromImage(filename);
-		String keyword = "Macbook Air";
+		String keyword = "cheerios";
 		findKeywordSearchResults(keyword);
 	}
 	
@@ -154,13 +154,18 @@ public class ProductSearch {
 			for(int i = 0; i < products.length(); ++i) {
 				JSONObject product = products.getJSONObject(i);
 				JSONArray retailers = product.getJSONArray("sitedetails");
-				String retailer = retailers.getJSONObject(0).getString("name");
+				ArrayList<Retailer> retailersList = new ArrayList<Retailer>();
+				for (int j = 0; j < retailers.length(); j++) {
+					String retailer = retailers.getJSONObject(i).getString("name");
+					String price = retailers.getJSONObject(i).getJSONArray("latestoffers").getJSONObject(0).getString("price");
+					retailersList.add(new Retailer(retailer, price));
+				}
 				hits.add(new ProductSearchHit(
 					product.getString("price"),
 					"2.0",
 					product.getString("name"),
 					product.getString("brand"),
-					retailer,
+					retailersList,
 					product.getString("upc")
 				));
 			}

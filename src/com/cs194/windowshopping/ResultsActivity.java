@@ -31,7 +31,7 @@ public class ResultsActivity extends Activity {
 		String photoFile = getIntent().getExtras().getString("photoFile");
 		new PopulateResultList().execute(photoFile);
 		
-		//registerClickCallback();
+		
 	}
 
 	@Override
@@ -69,21 +69,8 @@ public class ResultsActivity extends Activity {
 			title.setText(currentItem.getProductName());
 			TextView price = (TextView) itemView.findViewById(R.id.textView2);
 			price.setText(currentItem.getPrice());
-			TextView rating = (TextView) itemView.findViewById(R.id.textView3);
-			rating.setText(currentItem.getRating());
 			TextView brand = (TextView) itemView.findViewById(R.id.textView4);
 			brand.setText(currentItem.getBrandName());
-			TextView retailer = (TextView) itemView.findViewById(R.id.textView5);
-			retailer.setText(currentItem.getRetailerName());
-			Button save = (Button) itemView.findViewById(R.id.button1);
-			save.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					wds.open();
-					wds.addItem(results.get(position));
-					wds.close();
-				}	
-			});
 
 			return itemView;
 		}
@@ -98,9 +85,10 @@ public class ResultsActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View viewClicked,
 					int position, long id) {
 				ProductSearchHit clickedItem = results.get(position);
-				String url = clickedItem.getProductName();
-				Uri uri = Uri.parse(url);
-				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				Intent intent = new Intent(ResultsActivity.this, RetailersActivity.class);
+				intent.putExtra("retailer", clickedItem.getRetailer());
+				intent.putExtra("name", clickedItem.getProductName());
+				intent.putExtra("brand", clickedItem.getBrandName());
 				startActivity(intent);
 			}
 			
@@ -124,6 +112,7 @@ public class ResultsActivity extends Activity {
 		@Override
 		protected void onPostExecute(ArrayList<ProductSearchHit> products) {
 			populateListView(products);
+			registerClickCallback();
 		}
 	}
 

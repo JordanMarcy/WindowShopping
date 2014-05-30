@@ -62,7 +62,7 @@ public class WishlistActivity extends Activity {
 			//Make sure we have a view to work with (may have been null)
 			View itemView = convertView;
 			if (itemView == null) {
-				itemView = getLayoutInflater().inflate(R.layout.item_view, parent, false);
+				itemView = getLayoutInflater().inflate(R.layout.retailer_item_view, parent, false);
 			}
 			//Find the ShoppingItem to work with.
 			final ShoppingItem currentItem = wishlist.get(position);

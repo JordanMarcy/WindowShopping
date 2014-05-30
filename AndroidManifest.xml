@@ -40,6 +40,10 @@
             android:name="com.cs194.windowshopping.ResultsActivity"
             android:label="@string/title_activity_results" >
         </activity>
+        <activity
+            android:name="com.cs194.windowshopping.RetailersActivity"
+            android:label="@string/title_activity_retailers" >
+        </activity>
     </application>
 
 </manifest>
