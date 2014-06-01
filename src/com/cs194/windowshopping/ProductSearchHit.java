@@ -1,15 +1,24 @@
 package com.cs194.windowshopping;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -50,6 +59,7 @@ public class ProductSearchHit {
 		this.brand = brand;
 		this.retailers = retailers;
 		this.upc = upc;
+		getImage();
 	}
 	
 	/**
@@ -103,8 +113,8 @@ public class ProductSearchHit {
 	 */
 	public Bitmap getImage() {
 		if(picture == null) {
-			HttpClient client = HttpClients.createDefault();
-			HttpGet getRequest = new HttpGet("http://content.hwigroup.net/images/products/xl/155820/3/apple_macbook_pro_retina_mc976na.jpg");
+			HttpClient client = new DefaultHttpClient();
+			HttpGet getRequest = new HttpGet(getImageURL());
 			HttpResponse response = null;
 			try {
 				response = client.execute(getRequest);
@@ -131,22 +141,47 @@ public class ProductSearchHit {
 		return picture;
 	}
 	
-//	private String getImageURL() {
-//		AWSECommerceService service = new AWSECommerceService();
-//		AWSECommerceServicePortType port = service.getAWSECommerceServicePort();
-//		
-//		ItemLookupRequest request = new ItemLookupRequest();
-//		request.setIdType("UPC");
-//		request.getItemId().add(upc);
-//		request.getResponseGroup().add("Images");
-//		
-//		ItemLookup lookup = new ItemLookup();
-//		lookup.getRequest().add(request);
-//		
-//		ItemLookupResponse response = port.itemLookup(lookup);
-//		Item item = response.getItems().get(0).getItem().get(0);
-//		return item.getSmallImage().getURL();
-//	}
+	private String getImageURL() {
+		final String ENDPOINT = "ecs.amazonaws.com";
+		final String AWS_ASSOCIATE_TAG = "windows0a2-20";
+		final String AWS_ACCESS_KEY_ID = "AKIAIZ3HLCPC3NDHUNDA";
+		final String AWS_SECRET_KEY = "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";
+
+		try {
+			SignedRequestsHelper helper = SignedRequestsHelper.getInstance(ENDPOINT, AWS_ACCESS_KEY_ID, AWS_SECRET_KEY);
+
+			Map<String, String> params 	= new HashMap<String, String>();
+			params.put("Service", "AWSECommerceService");
+			params.put("Operation", "ItemLookup");
+			params.put("IdType", "UPC");
+			params.put("SearchIndex", "All");
+			params.put("ItemId", upc);
+			params.put("ResponseGroup", "Images");
+			params.put("AssociateTag", AWS_ASSOCIATE_TAG);
+			String requestURL = helper.sign(params);
+			
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db.parse(requestURL);
+			
+			return doc.getElementsByTagName("MediumImage").item(0).getFirstChild().getTextContent();
+		} catch (InvalidKeyException  e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return "";
+	}
 	
 }
 
