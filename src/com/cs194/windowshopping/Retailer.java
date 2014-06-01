@@ -11,11 +11,12 @@ public class Retailer implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	
-	private String retailer, price;
+	private String retailer, price, website;
 	
-	public Retailer(String retailer, String price) {
+	public Retailer(String retailer, String price, String website) {
 		this.retailer = retailer;
 		this.price = price;
+		this.website = website;
 	}
 
 	public String getRetailer() {
@@ -24,5 +25,9 @@ public class Retailer implements Serializable{
 
 	public String getPrice() {
 		return price;
+	}
+	
+	public String getWebsite() {
+		return website;
 	}
 }

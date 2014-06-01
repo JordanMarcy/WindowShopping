@@ -70,6 +70,8 @@ public class ResultsActivity extends Activity {
 			price.setText(currentItem.getPrice());
 			TextView brand = (TextView) itemView.findViewById(R.id.textView4);
 			brand.setText(currentItem.getBrandName());
+			TextView rating = (TextView) itemView.findViewById(R.id.textView5);
+			rating.setText(currentItem.getRating());
 
 			return itemView;
 		}
