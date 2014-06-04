@@ -13,5 +13,6 @@
     <string name="title_activity_results">ResultsActivity</string>
     <string name="title_activity_website">WebsiteActivity</string>
     <string name="title_activity_retailers">RetailersActivity</string>
+    <string name="title_activity_barcode_results">BarcodeResultsActivity</string>
 
 </resources>

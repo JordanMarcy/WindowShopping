@@ -67,8 +67,6 @@ public class PhotoActivity extends Activity {
 	}
 	
 	public void searchImage(View view) {
-		
-		
 		Intent intent = new Intent(view.getContext(), ResultsActivity.class);
 		intent.putExtra("photoFile", mCurrentPhotoPath);
 		startActivity(intent);

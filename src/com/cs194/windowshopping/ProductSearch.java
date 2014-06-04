@@ -115,18 +115,12 @@ public class ProductSearch {
 	}
 	
 	private void findBarcodeSearchResults(String barcode) {
-		
-	}
-	
-	static private String GetKeywordFromImage(String filename) {
-		HttpClient client = new DefaultHttpClient();
-		String token = getCamFindToken(client, filename);
-		return getCamFindKeyword(client, token);
-	}
-	
-	private void findKeywordSearchResults(String keyword) {
 		Products products = new Products(semantics3_apikey, semantics3_apisecret);
-		products.productsField("search", keyword);		
+		products.productsField("upc", barcode);		
+		getResults(products);
+	}
+	
+	private void getResults(Products products) {
 		try {
 			JSONObject results;
 			results = products.getProducts();
@@ -146,6 +140,18 @@ public class ProductSearch {
 		} catch (NoSuchMethodError e) {
 			e.printStackTrace();
 		}
+	}
+	
+	static private String GetKeywordFromImage(String filename) {
+		HttpClient client = new DefaultHttpClient();
+		String token = getCamFindToken(client, filename);
+		return getCamFindKeyword(client, token);
+	}
+	
+	private void findKeywordSearchResults(String keyword) {
+		Products products = new Products(semantics3_apikey, semantics3_apisecret);
+		products.productsField("search", keyword);	
+		getResults(products);
 	}
 	
 	private void parseJSONSearchResults(JSONObject results) {

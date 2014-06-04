@@ -1,12 +1,26 @@
 package com.cs194.windowshopping;
 
+import java.io.File;
+import java.io.IOException;
+
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	
+	private static final int CAMERA_PIC_REQUEST = 1;
+	private static final int BARCODE_SCAN_REQUEST = 2;
+	private String mCurrentPhotoPath;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +39,33 @@ public class MainActivity extends Activity {
     
     /*Called when a user clicks the Take Photo button*/
     public void gotoCamera(View view) {
-    	Intent intent = new Intent(this, PhotoActivity.class);
-    	startActivity(intent);
+    	Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    	if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+    		File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+            }
+    	}
     }
-    
-    
+	
+	private File createImageFile() throws IOException {
+	    // Create an image file name
+	    String imageFileName = "WindowShopping";
+	    File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+	    File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+
+	    // Save a file: path for use with ACTION_VIEW intents
+	    mCurrentPhotoPath = image.getAbsolutePath();
+	    return image;
+	}
     
     public void onPhotoTaken() {
     	
@@ -43,7 +79,22 @@ public class MainActivity extends Activity {
     
     /*Called when a user clicks the Scan Barcode button*/
     public void gotoScanner(View view) {
-    	
+    	Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+    	startActivityForResult(intent, BARCODE_SCAN_REQUEST);
+    }
+    
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    	if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
+    		Intent resultsIntent = new Intent(this, ResultsActivity.class);
+    		resultsIntent.putExtra("photoFile", mCurrentPhotoPath);
+    		startActivity(resultsIntent);
+    	} else if (requestCode == BARCODE_SCAN_REQUEST && resultCode == RESULT_OK) {
+   			String contents = intent.getStringExtra("SCAN_RESULT");
+   			String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+  			Intent resultsIntent = new Intent(this, BarcodeResultsActivity.class);
+   			resultsIntent.putExtra("barcode", contents);
+   			startActivity(resultsIntent);
+    	}
     }
     
 }

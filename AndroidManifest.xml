@@ -44,6 +44,10 @@
             android:name="com.cs194.windowshopping.RetailersActivity"
             android:label="@string/title_activity_retailers" >
         </activity>
+        <activity
+            android:name="com.cs194.windowshopping.BarcodeResultsActivity"
+            android:label="@string/title_activity_barcode_results" >
+        </activity>
     </application>
 
 </manifest>

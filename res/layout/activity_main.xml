@@ -13,21 +13,36 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
+        android:background="@drawable/camera"
         android:text="@string/button_photo"
+        android:textColor="#ffffff"
+        android:textSize="60sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
         android:onClick="gotoCamera"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
+        android:background="@drawable/shelf"
         android:text="@string/button_wishlist"
+        android:textColor="#ffffff"
+        android:textSize="60sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
         android:onClick="gotoWishlist"/>
         
     <Button
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
+        android:background="@drawable/barcode"
         android:text="@string/button_barcode"
+        android:textColor="#ffffff"
+        android:textSize="60sp"
+        android:textAllCaps="true"
+        android:textStyle="bold"
         android:onClick="gotoScanner"/>
     
     

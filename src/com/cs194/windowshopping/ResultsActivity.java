@@ -1,5 +1,6 @@
 package com.cs194.windowshopping;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,6 @@ import android.widget.TextView;
 public class ResultsActivity extends Activity {
 	public WishlistDataSource wds = new WishlistDataSource(this);
 	public List<ProductSearchHit> results;
-	private ProductSearch ps;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +107,7 @@ public class ResultsActivity extends Activity {
 			for (int i = 0; i < ps.getNumberOfHits(); i++) {
 				products.add(ps.getHit(i));
 			}
+			new File(arg0[0]).delete(); //Delete photo from storage after search is over.
 			return products;
 		}
 		
@@ -114,6 +115,7 @@ public class ResultsActivity extends Activity {
 		protected void onPostExecute(ArrayList<ProductSearchHit> products) {
 			populateListView(products);
 			registerClickCallback();
+			
 		}
 	}
 

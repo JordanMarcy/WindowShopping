@@ -41,11 +41,11 @@ import android.graphics.BitmapFactory;
  */
 public class ProductSearchHit {
 	
-	String price, rating, name, brand, upc;
-	ArrayList<Retailer> retailers;
-	ArrayList<ProductReview> reviews;
+	private String price, rating, name, brand, upc;
+	private ArrayList<Retailer> retailers;
+	private ArrayList<ProductReview> reviews;
 	
-	Bitmap picture = null;
+	private Bitmap picture = null;
 	
 	/**
 	 * 
@@ -79,6 +79,14 @@ public class ProductSearchHit {
 	 */
 	public String getRating() {
 		return rating;
+	}
+	
+	public int getNumberOfReviews() {
+		return reviews.size();
+	}
+	
+	public String getReview(int i) {
+		return reviews.get(i).getText();
 	}
 	
 	/**
@@ -115,7 +123,7 @@ public class ProductSearchHit {
 	 * @return a bitmap or null if no image is available
 	 */
 	public Bitmap getImage() {
-		return picture;
+		return getPicture();
 	}
 	
 	private void saveImage(String url) {
@@ -134,7 +142,7 @@ public class ProductSearchHit {
 		HttpEntity entity = response.getEntity();
 		if(entity != null) {
 			try {
-				picture = BitmapFactory.decodeStream(entity.getContent());
+				setPicture(BitmapFactory.decodeStream(entity.getContent()));
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -195,7 +203,9 @@ public class ProductSearchHit {
 				reviewsDoc = Jsoup.connect(doc.getElementsByTagName("IFrameURL").item(0).getTextContent()).get();
 				rating = reviewsDoc.getElementsByClass("asinReviewsSummary").get(0).child(0).child(0).attr("alt");
 				
-				Elements reviewNodes = reviewsDoc.getElementsByClass("crlFrameReviewList").get(0).child(0).child(0).child(0).children();
+				//Elements reviewNodes = reviewsDoc.getElementsByClass("crlFrameReviewList").get(0).child(0).child(0).child(0).children();
+				Elements reviewNodes = reviewsDoc.getElementsByClass("crlFrameReviewList");
+
 				for(int i = 0; i < reviewNodes.size(); ++i) {
 					Element element = reviewNodes.get(i);
 					if(element.tagName() != "div") continue;
@@ -228,6 +238,14 @@ public class ProductSearchHit {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+	}
+
+	public Bitmap getPicture() {
+		return picture;
+	}
+
+	public void setPicture(Bitmap picture) {
+		this.picture = picture;
 	}
 	
 }
