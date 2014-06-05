@@ -1,4 +1,7 @@
 *.class
+*.apk
+*.dex
+*.ap_
 
 # Package Files #
 *.jar
