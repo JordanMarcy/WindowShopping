@@ -51,8 +51,7 @@ public class ProductSearch {
 	 * the results.
 	 * @param 	filename	the file location of the image containing a barcode		
 	 */
-	public void queryByBarcode(String filename) {
-		String barcode = GetBarcodeFromImage(filename);
+	public void queryByBarcode(String barcode) {
 		findBarcodeSearchResults(barcode);
 	}
 	
@@ -124,7 +123,10 @@ public class ProductSearch {
 		try {
 			JSONObject results;
 			results = products.getProducts();
-			parseJSONSearchResults(results);
+			if (results != null) {
+				parseJSONSearchResults(results);
+			}
+			
 		} catch (OAuthMessageSignerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -140,6 +142,7 @@ public class ProductSearch {
 		} catch (NoSuchMethodError e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	static private String GetKeywordFromImage(String filename) {
@@ -155,30 +158,36 @@ public class ProductSearch {
 	}
 	
 	private void parseJSONSearchResults(JSONObject results) {
-		try {
 			JSONArray products = results.getJSONArray("results");
 			for(int i = 0; i < products.length(); ++i) {
-				JSONObject product = products.getJSONObject(i);
-				JSONArray retailers = product.getJSONArray("sitedetails");
-				ArrayList<Retailer> retailersList = new ArrayList<Retailer>();
-				for (int j = 0; j < retailers.length(); j++) {
-					JSONObject retailer = retailers.getJSONObject(i);
-					String retailerName = retailer.getString("name");
-					String price = retailer.getJSONArray("latestoffers").getJSONObject(0).getString("price");
-					String website = retailer.getString("url");
-					retailersList.add(new Retailer(retailerName, price, website));
+				try {
+					JSONObject product = products.getJSONObject(i);
+					JSONArray retailers = product.getJSONArray("sitedetails");
+					ArrayList<Retailer> retailersList = new ArrayList<Retailer>();
+					for (int j = 0; j < retailers.length(); j++) {
+						try {
+							JSONObject retailer = retailers.getJSONObject(i);
+							String retailerName = retailer.getString("name");
+							String price = retailer.getJSONArray("latestoffers").getJSONObject(0).getString("price");
+							String website = retailer.getString("url");
+							retailersList.add(new Retailer(retailerName, price, website));
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						
+					}
+					hits.add(new ProductSearchHit(
+						product.getString("price"),
+						product.getString("name"),
+						product.getString("brand"),
+						retailersList,
+						product.getString("upc")
+					));
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-				hits.add(new ProductSearchHit(
-					product.getString("price"),
-					product.getString("name"),
-					product.getString("brand"),
-					retailersList,
-					product.getString("upc")
-				));
+				
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	static private String getCamFindToken(HttpClient client, String imageFilename) {

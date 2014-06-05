@@ -27,21 +27,24 @@
         android:layout_height="wrap_content"
         android:text="Product Price"
         android:textAppearance="?android:attr/textAppearanceLarge"       
-        android:layout_below="@+id/productName"/>
+        android:layout_below="@+id/productName"
+        android:layout_toRightOf="@+id/productImage"/>
     
     <TextView
         android:id="@+id/productBrand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
         android:text="Product Brand"
-        android:layout_below="@+id/productPrice"/>
+        android:layout_below="@+id/productPrice"
+        android:layout_toRightOf="@+id/productImage"/>
     
     <TextView
         android:id="@+id/productRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
         android:text="Product Rating"
-        android:layout_below="@+id/productBrand"/>
+        android:layout_below="@+id/productBrand"
+        android:layout_toRightOf="@+id/productImage"/>
     
     <TextView
         android:id="@+id/productReview"

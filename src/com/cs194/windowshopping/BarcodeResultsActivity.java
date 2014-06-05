@@ -27,6 +27,7 @@ public class BarcodeResultsActivity extends Activity {
 	}
 	
 	private void addProductToView(ProductSearchHit product) {
+		if (product == null) return;
 		ImageView image = (ImageView) findViewById(R.id.productImage);
 		image.setImageBitmap(product.getPicture());
 		TextView name = (TextView) findViewById(R.id.productName);

@@ -43,7 +43,7 @@ public class ProductSearchHit {
 	
 	private String price, rating, name, brand, upc;
 	private ArrayList<Retailer> retailers;
-	private ArrayList<ProductReview> reviews;
+	private ArrayList<ProductReview> reviews = new ArrayList<ProductReview>();
 	
 	private Bitmap picture = null;
 	

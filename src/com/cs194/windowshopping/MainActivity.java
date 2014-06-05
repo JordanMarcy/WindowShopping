@@ -91,6 +91,7 @@ public class MainActivity extends Activity {
     	} else if (requestCode == BARCODE_SCAN_REQUEST && resultCode == RESULT_OK) {
    			String contents = intent.getStringExtra("SCAN_RESULT");
    			String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+   			System.out.println(format);
   			Intent resultsIntent = new Intent(this, BarcodeResultsActivity.class);
    			resultsIntent.putExtra("barcode", contents);
    			startActivity(resultsIntent);
