@@ -16,17 +16,26 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ResultsActivity extends Activity {
 	public WishlistDataSource wds = new WishlistDataSource(this);
+	public ProductSearch ps;
 	public List<ProductSearchHit> results;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_results);
-		String photoFile = getIntent().getExtras().getString("photoFile");
-		new PopulateResultList().execute(photoFile);
+		String source = getIntent().getExtras().getString("source");
+		if (source.equals("text")) {
+			String searchTerm = getIntent().getExtras().getString("searchTerm");
+			new PopulateResultListText().execute(searchTerm);
+		} else {
+			String photoFile = getIntent().getExtras().getString("photoFile");
+			new PopulateResultList().execute(photoFile);
+		}
+		
 		
 		
 	}
@@ -72,7 +81,7 @@ public class ResultsActivity extends Activity {
 			brand.setText(currentItem.getBrandName());
 			TextView rating = (TextView) itemView.findViewById(R.id.textView5);
 			rating.setText(currentItem.getRating());
-
+			Toast.makeText(getContext(), ps.getKeyword(), Toast.LENGTH_SHORT).show();
 			return itemView;
 		}
 		
@@ -101,21 +110,44 @@ public class ResultsActivity extends Activity {
 		@Override
 		protected ArrayList<ProductSearchHit> doInBackground(String... arg0) {
 			ArrayList<ProductSearchHit> products = new ArrayList<ProductSearchHit>();
-			ProductSearch ps = new ProductSearch();
+			ps = new ProductSearch();
 			ps.queryByPicture(arg0[0]);
 			
 			for (int i = 0; i < ps.getNumberOfHits(); i++) {
 				products.add(ps.getHit(i));
 			}
 			new File(arg0[0]).delete(); //Delete photo from storage after search is over.
+			
 			return products;
 		}
 		
 		@Override
 		protected void onPostExecute(ArrayList<ProductSearchHit> products) {
 			populateListView(products);
-			registerClickCallback();
+			registerClickCallback();			
+		}
+	}
+	
+	private class PopulateResultListText extends AsyncTask<String, Void, ArrayList<ProductSearchHit>> {
+		
+		@Override
+		protected ArrayList<ProductSearchHit> doInBackground(String... arg0) {
+			ArrayList<ProductSearchHit> products = new ArrayList<ProductSearchHit>();
+			ps = new ProductSearch();
+			ps.queryByText(arg0[0]);
 			
+			for (int i = 0; i < ps.getNumberOfHits(); i++) {
+				products.add(ps.getHit(i));
+			}
+			new File(arg0[0]).delete(); //Delete photo from storage after search is over.
+			
+			return products;
+		}
+		
+		@Override
+		protected void onPostExecute(ArrayList<ProductSearchHit> products) {
+			populateListView(products);
+			registerClickCallback();			
 		}
 	}
 

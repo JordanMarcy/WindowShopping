@@ -22,6 +22,8 @@ import org.jsonplus.JSONArray;
 import org.jsonplus.JSONException;
 import org.jsonplus.JSONObject;
 
+import android.widget.Toast;
+
 import com.semantics3.api.Products;
 
 /**
@@ -61,8 +63,19 @@ public class ProductSearch {
 	 */
 	public void queryByPicture(String filename) {
 		//String keyword = GetKeywordFromImage(filename);
-		String keyword = "macbook air";
 		findKeywordSearchResults(keyword);
+	}
+	
+	public void queryByText(String text) {
+		keyword = text;
+		System.out.println(text);
+		findKeywordSearchResults(keyword);
+	}
+	
+	private String keyword = "macbook";
+	
+	public String getKeyword() {
+		return keyword;
 	}
 	
 	/**
@@ -164,9 +177,10 @@ public class ProductSearch {
 					JSONObject product = products.getJSONObject(i);
 					JSONArray retailers = product.getJSONArray("sitedetails");
 					ArrayList<Retailer> retailersList = new ArrayList<Retailer>();
+					System.out.println("num of retailers: " + retailers.toString());
 					for (int j = 0; j < retailers.length(); j++) {
 						try {
-							JSONObject retailer = retailers.getJSONObject(i);
+							JSONObject retailer = retailers.getJSONObject(j);
 							String retailerName = retailer.getString("name");
 							String price = retailer.getJSONArray("latestoffers").getJSONObject(0).getString("price");
 							String website = retailer.getString("url");
