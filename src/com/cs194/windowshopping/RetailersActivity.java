@@ -3,6 +3,7 @@ package com.cs194.windowshopping;
 import java.util.ArrayList;
 
 import android.os.Bundle;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.view.Menu;
@@ -19,7 +20,7 @@ public class RetailersActivity extends Activity {
 	private ArrayList<Retailer> retailers = null;
 	private String name, brandName;
 	public WishlistDataSource wds = new WishlistDataSource(this);
-	private Typeface robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+	private Typeface robotoFont;
 
 	
 	
@@ -28,6 +29,9 @@ public class RetailersActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_retailers);
+		Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		retailers = (ArrayList<Retailer>) getIntent().getSerializableExtra("retailer");
 		name = getIntent().getExtras().getString("name");
 		brandName = getIntent().getExtras().getString("brand");

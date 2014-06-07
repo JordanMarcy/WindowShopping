@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -23,12 +24,15 @@ public class ResultsActivity extends Activity {
 	public WishlistDataSource wds = new WishlistDataSource(this);
 	public ProductSearch ps;
 	public List<ProductSearchHit> results;
-	private Typeface robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+	private Typeface robotoFont;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_results);
+		Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		String source = getIntent().getExtras().getString("source");
 		if (source.equals("text")) {
 			String searchTerm = getIntent().getExtras().getString("searchTerm");

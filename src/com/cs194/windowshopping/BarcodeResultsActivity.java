@@ -1,6 +1,7 @@
 package com.cs194.windowshopping;
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -11,13 +12,16 @@ import android.widget.TextView;
 
 public class BarcodeResultsActivity extends Activity {
 	private WishlistDataSource wds = new WishlistDataSource(this);
-	private Typeface robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+	private Typeface robotoFont;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_barcode_results);
+		Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		String barcode = getIntent().getExtras().getString("barcode");
 		new GetBarcodeResult().execute(barcode);
 	}

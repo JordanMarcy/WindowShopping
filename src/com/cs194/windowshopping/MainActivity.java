@@ -19,14 +19,14 @@ public class MainActivity extends Activity {
 	private static final int CAMERA_PIC_REQUEST = 1;
 	private static final int BARCODE_SCAN_REQUEST = 2;
 	private String mCurrentPhotoPath;
-	private Typeface robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+	private Typeface robotoFont;
 
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+        Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
     }
 
 

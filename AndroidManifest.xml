@@ -30,23 +30,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.cs194.windowshopping.PhotoActivity" >
-        </activity>
         <activity
             android:name="com.cs194.windowshopping.WishlistActivity"
             android:label="@string/title_activity_wishlist" >
+            <meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+           		android:value="com.cs194.windowshopping.MainActivity" />
         </activity>
         <activity
             android:name="com.cs194.windowshopping.ResultsActivity"
             android:label="@string/title_activity_results" >
+            <meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+           		android:value="com.cs194.windowshopping.MainActivity" />
         </activity>
         <activity
             android:name="com.cs194.windowshopping.RetailersActivity"
             android:label="@string/title_activity_retailers" >
+            <meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+           		android:value="com.cs194.windowshopping.ResultsActivity" />
         </activity>
         <activity
             android:name="com.cs194.windowshopping.BarcodeResultsActivity"
             android:label="@string/title_activity_barcode_results" >
+            <meta-data
+            	android:name="android.support.PARENT_ACTIVITY"
+           		android:value="com.cs194.windowshopping.MainActivity" />
         </activity>
     </application>
 
