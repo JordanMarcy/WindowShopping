@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 public class WishlistActivity extends Activity {
 	public WishlistDataSource wds = new WishlistDataSource(this);
 	public List<ShoppingItem> wishlist = new ArrayList<ShoppingItem>();
+	private Typeface robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+
 	
 
 	@Override

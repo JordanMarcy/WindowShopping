@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,6 +23,7 @@ public class ResultsActivity extends Activity {
 	public WishlistDataSource wds = new WishlistDataSource(this);
 	public ProductSearch ps;
 	public List<ProductSearchHit> results;
+	private Typeface robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

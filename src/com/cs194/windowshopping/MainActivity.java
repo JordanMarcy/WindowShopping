@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +19,8 @@ public class MainActivity extends Activity {
 	private static final int CAMERA_PIC_REQUEST = 1;
 	private static final int BARCODE_SCAN_REQUEST = 2;
 	private String mCurrentPhotoPath;
+	private Typeface robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {

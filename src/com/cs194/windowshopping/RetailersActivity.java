@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ public class RetailersActivity extends Activity {
 	private ArrayList<Retailer> retailers = null;
 	private String name, brandName;
 	public WishlistDataSource wds = new WishlistDataSource(this);
+	private Typeface robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+
 	
 	
 	@SuppressWarnings("unchecked")

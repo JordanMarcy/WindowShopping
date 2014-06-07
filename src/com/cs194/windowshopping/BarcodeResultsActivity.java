@@ -2,6 +2,7 @@ package com.cs194.windowshopping;
 
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 public class BarcodeResultsActivity extends Activity {
 	private WishlistDataSource wds = new WishlistDataSource(this);
+	private Typeface robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
