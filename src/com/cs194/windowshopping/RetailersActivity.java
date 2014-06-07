@@ -39,10 +39,11 @@ public class RetailersActivity extends Activity {
 		return true;
 	}
 
-private void createHeader() {
-//		View header = getLayoutInflater().inflate(R.layout.activity_retailers, null, false);
-//		TextView name = (TextView) header.findViewById(R.id.name);
-//		name.setText(name);
+	private void createHeader() {
+		TextView nameText = (TextView) this.findViewById(R.id.name);
+		nameText.setText(name);
+		TextView brandText = (TextView) this.findViewById(R.id.brand);
+		brandText.setText(brandName);
 	}
 	
 	private void populateListView() {

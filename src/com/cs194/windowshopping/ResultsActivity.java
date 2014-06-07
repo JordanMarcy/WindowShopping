@@ -52,6 +52,7 @@ public class ResultsActivity extends Activity {
 		ArrayAdapter<ProductSearchHit> adapter = new MyListAdapter();
 		ListView list = (ListView) findViewById(R.id.results);
 		list.setAdapter(adapter);
+		Toast.makeText(this, ps.getKeyword(), Toast.LENGTH_SHORT).show();
 	}
 	
 
@@ -81,7 +82,7 @@ public class ResultsActivity extends Activity {
 			brand.setText(currentItem.getBrandName());
 			TextView rating = (TextView) itemView.findViewById(R.id.textView5);
 			rating.setText(currentItem.getRating());
-			Toast.makeText(getContext(), ps.getKeyword(), Toast.LENGTH_SHORT).show();
+			
 			return itemView;
 		}
 		
