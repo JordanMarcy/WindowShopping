@@ -20,7 +20,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 			+ TABLE_WISHLIST + "(" 
 			+ COLUMN_NAME + " text not null, " 
 			+ COLUMN_PRICE + " text not null, " 
-			+ COLUMN_URL + " text not null"
+			+ COLUMN_URL + " text not null, "
 			+ COLUMN_BRAND + " text not null);";
 	
 	public MySQLiteHelper(Context context) {

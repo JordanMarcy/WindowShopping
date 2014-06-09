@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -39,6 +42,10 @@ public class RetailersActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_retailers);
+		ImageView picture = (ImageView) findViewById(R.id.picture);
+		byte[] byteArray = getIntent().getByteArrayExtra("picture");
+		Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+		picture.setImageBitmap(bmp);
 		Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -156,6 +163,8 @@ public class RetailersActivity extends Activity {
 					wds.open();
 					wds.addItem(psh.getProductName(), psh.getBrandName(), retailers.get(position));
 					wds.close();
+					Intent wishlistIntent = new Intent(RetailersActivity.this, WishlistActivity.class);
+					startActivity(wishlistIntent);
 				}	
 			});
 			Button buy = (Button) itemView.findViewById(R.id.buy_button);

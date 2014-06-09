@@ -61,15 +61,12 @@ public class ProductSearch {
 	 * @param 	filename	the file location of an image of a product
 	 */
 	public void queryByPicture(String filename) {
-		//String keyword = GetKeywordFromImage(filename);
-		System.out.println("Before findKeywordSearchResults");
+		keyword = GetKeywordFromImage(filename);
 		findKeywordSearchResults(keyword);
-		System.out.println("After findKeywordSearchResults");
 	}
 	
 	public void queryByText(String text) {
 		keyword = text;
-		System.out.println(text);
 		findKeywordSearchResults(keyword);
 	}
 	
@@ -122,14 +119,11 @@ public class ProductSearch {
 	public void sortHitsByPrice() {
 		//TODO
 	}
-	
-	static private String GetBarcodeFromImage(String filename) {
-		return "049000056976";
-	}
+
 	
 	private void findBarcodeSearchResults(String barcode) {
 		Products products = new Products(semantics3_apikey, semantics3_apisecret);
-		products.productsField("upc", "769100216932");		
+		products.productsField("upc", barcode);		
 		getResults(products);
 	}
 	
@@ -142,13 +136,9 @@ public class ProductSearch {
 	private void getResults(Products products) {
 		try {
 			JSONObject results;
-			System.out.println("Before products.getProducts");
 			results = products.getProducts();
-			System.out.println("After products.getProducts");
 			if (results != null) {
-				System.out.println("Before parseJSONSearchResults");
 				parseJSONSearchResults(results);
-				System.out.println("After parseJSONSearchResults");
 			}
 			
 		} catch (OAuthMessageSignerException e) {
@@ -243,7 +233,7 @@ public class ProductSearch {
 	static private String getCamFindKeyword(HttpClient client, String token) {
 		String url = "https://camfind.p.mashape.com/image_responses/" + token;
 		HttpGet httpget = new HttpGet(url);
-		httpget.addHeader("X-Mashape-Authorization", "Xe27RaykrrRyUydb20Ckw02sBLfMvRQZ");
+		httpget.addHeader("X-Mashape-Authorization", "6eVj02xwUi6yrN4pvdBKXIOa9xmdruFT");
 		
 		try {
 			while(true) {

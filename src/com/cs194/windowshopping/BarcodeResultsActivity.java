@@ -1,6 +1,7 @@
 package com.cs194.windowshopping;
 
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
@@ -8,6 +9,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -100,14 +102,13 @@ public class BarcodeResultsActivity extends Activity {
 			//Fill the view
 			ImageView img = (ImageView) itemView.findViewById(R.id.picture);
 			img.setImageBitmap(currentItem.getImage());
-			TextView title = (TextView) itemView.findViewById(R.id.textView1);
+			TextView title = (TextView) itemView.findViewById(R.id.name);
 			title.setText(currentItem.getProductName());
-			TextView price = (TextView) itemView.findViewById(R.id.textView2);
+			TextView price = (TextView) itemView.findViewById(R.id.price);
 			price.setText(currentItem.getPrice());
-			TextView brand = (TextView) itemView.findViewById(R.id.textView4);
+			TextView brand = (TextView) itemView.findViewById(R.id.brand);
 			brand.setText(currentItem.getBrandName());
-			TextView rating = (TextView) itemView.findViewById(R.id.textView5);
-			rating.setText(currentItem.getRating());
+
 			
 			return itemView;
 		}
@@ -127,6 +128,11 @@ public class BarcodeResultsActivity extends Activity {
 				intent.putExtra("retailers", clickedItem.getRetailer());
 				intent.putExtra("reviews", clickedItem.getReviews());
 				intent.putExtra("upc", clickedItem.getUPC());
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				Bitmap picture = clickedItem.getPicture();
+				picture.compress(Bitmap.CompressFormat.PNG, 100, stream);
+				byte[] byteArray = stream.toByteArray();
+				intent.putExtra("picture", byteArray);
 				startActivity(intent);
 			}
 			

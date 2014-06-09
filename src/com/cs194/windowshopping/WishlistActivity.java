@@ -105,6 +105,7 @@ public class WishlistActivity extends Activity {
 			//Fill the view
 			TextView title = (TextView) itemView.findViewById(R.id.textView1);
 			title.setText(currentItem.getName());
+			title.setSingleLine(true);
 			TextView price = (TextView) itemView.findViewById(R.id.textView2);
 			price.setText(currentItem.getPrice());
 			Button remove = (Button) itemView.findViewById(R.id.button1);

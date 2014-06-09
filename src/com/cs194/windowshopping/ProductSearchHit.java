@@ -163,7 +163,9 @@ public class ProductSearchHit {
 		HttpEntity entity = response.getEntity();
 		if(entity != null) {
 			try {
+				System.out.println("setPicture Start");
 				setPicture(BitmapFactory.decodeStream(entity.getContent()));
+				System.out.println("setPicture End");
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -175,7 +177,6 @@ public class ProductSearchHit {
 	}
 	
 	public String findAmazonProductDetails(boolean images) {
-		System.out.println("Before Amazon Calls");
 		final String ENDPOINT = "ecs.amazonaws.com";
 		final String AWS_ASSOCIATE_TAG = "windows0a2-20";
 		final String AWS_ACCESS_KEY_ID = "AKIAIZ3HLCPC3NDHUNDA";
@@ -213,13 +214,11 @@ public class ProductSearchHit {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("After Amazon Calls");
 		return "";
 	}
 	
 	public void findReviewsFromAmazon(SignedRequestsHelper helper,
 			Map<String, String> params, DocumentBuilder db) {
-		System.out.println("In findReviewsFromAmazon");
 		params.put("ResponseGroup", "Reviews");
 		String requestURL = helper.sign(params);
 		try {
@@ -227,23 +226,19 @@ public class ProductSearchHit {
 			org.jsoup.nodes.Document reviewsDoc;
 			if(doc.getElementsByTagName("HasReviews").item(0).getTextContent().equals("true")) {
 				reviewsDoc = Jsoup.connect(doc.getElementsByTagName("IFrameURL").item(0).getTextContent()).get();
-				System.out.println(doc.getElementsByTagName("IFrameURL").item(0).getTextContent());
 				rating = reviewsDoc.getElementsByClass("asinReviewsSummary").get(0).child(0).child(0).attr("alt");
 				
 				//Elements reviewNodes = reviewsDoc.getElementsByClass("crlFrameReviewList").get(0).child(0).child(0).child(0).children();
 				Elements reviewNodes = reviewsDoc.getElementsByClass("reviewText");
 				reviews = new ArrayList<ProductReview>();
-				System.out.println(reviewNodes.size());
 				for(int i = 0; i < reviewNodes.size(); ++i) {
 					Element element = reviewNodes.get(i);
 					if(element.tagName() != "div") continue;
 					String reviewText = element.text();
-					System.out.println("reviewText");
 					String reviewRating = "5.0 out of 5 stars";
 					reviews.add(new ProductReview(reviewText, reviewRating));
 					
 				}
-				System.out.println("reviews size " + reviews.size());
 			} else
 				rating = "";
 		} catch (SAXException e) {
@@ -257,6 +252,7 @@ public class ProductSearchHit {
 	}
 
 	private void findImageFromAmazon(SignedRequestsHelper helper, Map<String,String> params, DocumentBuilder db) {
+		System.out.println("findImageFromAmazon Start");
 		params.put("ResponseGroup", "Images");
 		String requestURL = helper.sign(params);
 		try {
@@ -269,6 +265,7 @@ public class ProductSearchHit {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+		System.out.println("findImageFromAmazon End");
 	}
 
 	public Bitmap getPicture() {
@@ -278,6 +275,5 @@ public class ProductSearchHit {
 	public void setPicture(Bitmap picture) {
 		this.picture = picture;
 	}
-	
 }
 
