@@ -9,14 +9,12 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
     
     <Button
@@ -24,6 +22,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="saveToWishlist"
-        android:text="Save to Wishlist" />
+        android:text="@string/save_wishlist" />
+    
+    <Button
+        android:id="@+id/buy_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="buyNow"
+        android:text="@string/buy_now" />
     
 </LinearLayout>

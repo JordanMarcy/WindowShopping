@@ -15,7 +15,7 @@ public class WishlistDataSource {
 	private SQLiteDatabase database;
 	private MySQLiteHelper dbHelper;
 	private String[] allColumns = {MySQLiteHelper.COLUMN_NAME, MySQLiteHelper.COLUMN_PRICE, 
-			MySQLiteHelper.COLUMN_URL};
+			MySQLiteHelper.COLUMN_URL, MySQLiteHelper.COLUMN_BRAND};
 	
 	
 	public WishlistDataSource(Context context) {
@@ -33,8 +33,9 @@ public class WishlistDataSource {
 	public void addItem(String name, String brandName, Retailer retailer) {
 		ContentValues values = new ContentValues();
 		values.put(MySQLiteHelper.COLUMN_NAME, name);
+		values.put(MySQLiteHelper.COLUMN_BRAND, brandName);
 		values.put(MySQLiteHelper.COLUMN_PRICE, retailer.getPrice());
-		values.put(MySQLiteHelper.COLUMN_URL, brandName);
+		values.put(MySQLiteHelper.COLUMN_URL, retailer.getWebsite());
 		
 		long insertID = database.insert(MySQLiteHelper.TABLE_WISHLIST, null, values);
 	}

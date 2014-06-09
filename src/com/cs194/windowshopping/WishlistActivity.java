@@ -119,6 +119,14 @@ public class WishlistActivity extends Activity {
 					startActivity(getIntent());
 				}	
 			});
+			Button buy = (Button) itemView.findViewById(R.id.buy_button);
+			buy.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(wishlist.get(position).getUrl()));
+					startActivity(browserIntent);
+				}
+			});
 
 			return itemView;
 		}

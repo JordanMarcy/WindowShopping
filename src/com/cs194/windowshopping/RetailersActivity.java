@@ -8,6 +8,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -156,6 +157,15 @@ public class RetailersActivity extends Activity {
 					wds.addItem(psh.getProductName(), psh.getBrandName(), retailers.get(position));
 					wds.close();
 				}	
+			});
+			Button buy = (Button) itemView.findViewById(R.id.buy_button);
+			buy.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					String website = retailers.get(position).getWebsite();
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+					startActivity(browserIntent);
+				}
 			});
 
 			return itemView;
