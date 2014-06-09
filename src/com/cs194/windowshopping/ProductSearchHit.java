@@ -25,6 +25,7 @@ import org.xml.sax.SAXException;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcelable;
 
 //import com.ECS.client.jax.AWSECommerceService;
 //import com.ECS.client.jax.AWSECommerceServicePortType;
@@ -43,7 +44,7 @@ public class ProductSearchHit {
 	
 	private String price, rating, name, brand, upc;
 	private ArrayList<Retailer> retailers;
-	private ArrayList<ProductReview> reviews = new ArrayList<ProductReview>();
+	private ArrayList<ProductReview> reviews = null;
 	
 	private Bitmap picture = null;
 	
@@ -62,7 +63,16 @@ public class ProductSearchHit {
 		this.brand = brand;
 		this.retailers = retailers;
 		this.upc = upc;
-		findAmazonProductDetails();
+		findAmazonProductDetails(true);
+	}
+	
+	ProductSearchHit(String name, String brand, ArrayList<Retailer> retailers, 
+			ArrayList<ProductReview> reviews, String upc) {
+		this.name = name;
+		this.brand = brand;
+		this.retailers = retailers;
+		this.reviews = reviews;
+		this.upc = upc;
 	}
 	
 	/**
@@ -73,6 +83,10 @@ public class ProductSearchHit {
 		return price;
 	}
 	
+	public String getUPC() {
+		return upc;
+	}
+	
 	/**
 	 * Returns the rating of a product.
 	 * @return	rating in the range [1,5]
@@ -81,9 +95,16 @@ public class ProductSearchHit {
 		return rating;
 	}
 	
+	public ArrayList<ProductReview> getReviews() {
+		return reviews;
+	}
+	
 	public int getNumberOfReviews() {
+		if (reviews == null) return 0;
 		return reviews.size();
 	}
+	
+
 	
 	public String getReview(int i) {
 		return reviews.get(i).getText();
@@ -153,7 +174,8 @@ public class ProductSearchHit {
 		}		
 	}
 	
-	private String findAmazonProductDetails() {
+	public String findAmazonProductDetails(boolean images) {
+		System.out.println("Before Amazon Calls");
 		final String ENDPOINT = "ecs.amazonaws.com";
 		final String AWS_ASSOCIATE_TAG = "windows0a2-20";
 		final String AWS_ACCESS_KEY_ID = "AKIAIZ3HLCPC3NDHUNDA";
@@ -173,8 +195,11 @@ public class ProductSearchHit {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			
-			findImageFromAmazon(helper, params, db);
-			findReviewsFromAmazon(helper, params, db);
+			if (images) {
+				findImageFromAmazon(helper, params, db);
+			} else {
+				findReviewsFromAmazon(helper, params, db);
+			}
 
 		} catch (InvalidKeyException  e) {
 			// TODO Auto-generated catch block
@@ -188,12 +213,13 @@ public class ProductSearchHit {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		System.out.println("After Amazon Calls");
 		return "";
 	}
 	
-	private void findReviewsFromAmazon(SignedRequestsHelper helper,
+	public void findReviewsFromAmazon(SignedRequestsHelper helper,
 			Map<String, String> params, DocumentBuilder db) {
+		System.out.println("In findReviewsFromAmazon");
 		params.put("ResponseGroup", "Reviews");
 		String requestURL = helper.sign(params);
 		try {
@@ -201,26 +227,31 @@ public class ProductSearchHit {
 			org.jsoup.nodes.Document reviewsDoc;
 			if(doc.getElementsByTagName("HasReviews").item(0).getTextContent().equals("true")) {
 				reviewsDoc = Jsoup.connect(doc.getElementsByTagName("IFrameURL").item(0).getTextContent()).get();
+				System.out.println(doc.getElementsByTagName("IFrameURL").item(0).getTextContent());
 				rating = reviewsDoc.getElementsByClass("asinReviewsSummary").get(0).child(0).child(0).attr("alt");
 				
 				//Elements reviewNodes = reviewsDoc.getElementsByClass("crlFrameReviewList").get(0).child(0).child(0).child(0).children();
-				Elements reviewNodes = reviewsDoc.getElementsByClass("crlFrameReviewList");
-
+				Elements reviewNodes = reviewsDoc.getElementsByClass("reviewText");
+				reviews = new ArrayList<ProductReview>();
+				System.out.println(reviewNodes.size());
 				for(int i = 0; i < reviewNodes.size(); ++i) {
 					Element element = reviewNodes.get(i);
 					if(element.tagName() != "div") continue;
-					String reviewText = element.child(3).text();
-					String reviewRating = element.child(1).child(0).child(0).attr("alt");
+					String reviewText = element.text();
+					System.out.println("reviewText");
+					String reviewRating = "5.0 out of 5 stars";
 					reviews.add(new ProductReview(reviewText, reviewRating));
+					
 				}
+				System.out.println("reviews size " + reviews.size());
 			} else
 				rating = "";
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 	}

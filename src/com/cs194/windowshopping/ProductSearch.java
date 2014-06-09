@@ -22,7 +22,6 @@ import org.jsonplus.JSONArray;
 import org.jsonplus.JSONException;
 import org.jsonplus.JSONObject;
 
-import android.widget.Toast;
 
 import com.semantics3.api.Products;
 
@@ -63,7 +62,9 @@ public class ProductSearch {
 	 */
 	public void queryByPicture(String filename) {
 		//String keyword = GetKeywordFromImage(filename);
+		System.out.println("Before findKeywordSearchResults");
 		findKeywordSearchResults(keyword);
+		System.out.println("After findKeywordSearchResults");
 	}
 	
 	public void queryByText(String text) {
@@ -128,16 +129,26 @@ public class ProductSearch {
 	
 	private void findBarcodeSearchResults(String barcode) {
 		Products products = new Products(semantics3_apikey, semantics3_apisecret);
-		products.productsField("upc", barcode);		
+		products.productsField("upc", "769100216932");		
+		getResults(products);
+	}
+	
+	public void findSimilarProducts(ProductSearchHit psh) {
+		Products products = new Products(semantics3_apikey, semantics3_apisecret);
+		products.productsField("search", psh.getProductName());
 		getResults(products);
 	}
 	
 	private void getResults(Products products) {
 		try {
 			JSONObject results;
+			System.out.println("Before products.getProducts");
 			results = products.getProducts();
+			System.out.println("After products.getProducts");
 			if (results != null) {
+				System.out.println("Before parseJSONSearchResults");
 				parseJSONSearchResults(results);
+				System.out.println("After parseJSONSearchResults");
 			}
 			
 		} catch (OAuthMessageSignerException e) {
@@ -177,7 +188,6 @@ public class ProductSearch {
 					JSONObject product = products.getJSONObject(i);
 					JSONArray retailers = product.getJSONArray("sitedetails");
 					ArrayList<Retailer> retailersList = new ArrayList<Retailer>();
-					System.out.println("num of retailers: " + retailers.toString());
 					for (int j = 0; j < retailers.length(); j++) {
 						try {
 							JSONObject retailer = retailers.getJSONObject(j);
@@ -198,7 +208,7 @@ public class ProductSearch {
 						product.getString("upc")
 					));
 				} catch (JSONException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				
 			}

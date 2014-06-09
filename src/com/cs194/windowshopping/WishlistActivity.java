@@ -5,11 +5,15 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -17,12 +21,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 public class WishlistActivity extends Activity {
 	public WishlistDataSource wds = new WishlistDataSource(this);
 	public List<ShoppingItem> wishlist = new ArrayList<ShoppingItem>();
-	private Typeface robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
+	private Typeface robotoFont;
 
 	
 
@@ -30,6 +35,7 @@ public class WishlistActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_wishlist);
+		robotoFont = Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		populateWishList();
@@ -41,8 +47,31 @@ public class WishlistActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.wishlist, menu);
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));  
+        MenuItem homeItem = menu.findItem(R.id.action_home);
+		homeItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		case R.id.action_home:
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		
+		return false;
+	}
+
 	
 	
 	private void populateWishList() {

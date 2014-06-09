@@ -17,7 +17,6 @@
         android:id="@+id/productName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
-        android:text="Product Name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_toRightOf="@+id/productImage"/>
     
@@ -25,7 +24,6 @@
         android:id="@+id/productPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Product Price"
         android:textAppearance="?android:attr/textAppearanceLarge"       
         android:layout_below="@+id/productName"
         android:layout_toRightOf="@+id/productImage"/>
@@ -34,23 +32,23 @@
         android:id="@+id/productBrand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
-        android:text="Product Brand"
         android:layout_below="@+id/productPrice"
         android:layout_toRightOf="@+id/productImage"/>
-    
+
     <TextView
-        android:id="@+id/productRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:text="Product Rating"
-        android:layout_below="@+id/productBrand"
-        android:layout_toRightOf="@+id/productImage"/>
+        android:id="@+id/similar_titles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/productImage"
+        android:text="@string/similar_title" />
     
-    <TextView
-        android:id="@+id/productReview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_below="@+id/productImage"/>
+    <ListView
+        android:id="@+id/results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/similar_titles" >
+
+    </ListView>
     
     
 

@@ -6,17 +6,23 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,18 +35,21 @@ public class ResultsActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_results);
 		Typeface.createFromAsset(getAssets(), "fonts/robotolight.ttf");
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		String source = getIntent().getExtras().getString("source");
-		if (source.equals("text")) {
-			String searchTerm = getIntent().getExtras().getString("searchTerm");
-			new PopulateResultListText().execute(searchTerm);
-		} else {
+		
+		Intent intent = getIntent();
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			new PopulateResultListText().execute(query);
+		} else {		
 			String photoFile = getIntent().getExtras().getString("photoFile");
 			new PopulateResultList().execute(photoFile);
 		}
+		
 		
 		
 		
@@ -50,8 +59,31 @@ public class ResultsActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.results, menu);
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        MenuItem homeItem = menu.findItem(R.id.action_home);
+		homeItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		case R.id.action_home:
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		
+		return false;
+	}
+
 	
 	private void populateListView(ArrayList<ProductSearchHit> products) {
 		results = products;
@@ -99,13 +131,14 @@ public class ResultsActivity extends Activity {
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View viewClicked,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
 				ProductSearchHit clickedItem = results.get(position);
 				Intent intent = new Intent(ResultsActivity.this, RetailersActivity.class);
-				intent.putExtra("retailer", clickedItem.getRetailer());
 				intent.putExtra("name", clickedItem.getProductName());
 				intent.putExtra("brand", clickedItem.getBrandName());
+				intent.putExtra("retailers", clickedItem.getRetailer());
+				intent.putExtra("reviews", clickedItem.getReviews());
+				intent.putExtra("upc", clickedItem.getUPC());
 				startActivity(intent);
 			}
 			
@@ -116,6 +149,7 @@ public class ResultsActivity extends Activity {
 		
 		@Override
 		protected ArrayList<ProductSearchHit> doInBackground(String... arg0) {
+			
 			ArrayList<ProductSearchHit> products = new ArrayList<ProductSearchHit>();
 			ps = new ProductSearch();
 			ps.queryByPicture(arg0[0]);
@@ -129,8 +163,14 @@ public class ResultsActivity extends Activity {
 		}
 		
 		@Override
+		protected void onPreExecute() {
+			setProgressBarIndeterminateVisibility(true);
+		}
+		
+		@Override
 		protected void onPostExecute(ArrayList<ProductSearchHit> products) {
 			populateListView(products);
+			setProgressBarIndeterminateVisibility(false);
 			registerClickCallback();			
 		}
 	}
@@ -152,12 +192,16 @@ public class ResultsActivity extends Activity {
 		}
 		
 		@Override
+		protected void onPreExecute() {
+			setProgressBarIndeterminateVisibility(true);
+		}
+		
+		@Override
 		protected void onPostExecute(ArrayList<ProductSearchHit> products) {
 			populateListView(products);
+			setProgressBarIndeterminateVisibility(false);
 			registerClickCallback();			
 		}
 	}
-
-	
 	
 }

@@ -4,15 +4,21 @@ import java.io.File;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 public class MainActivity extends Activity {
 	
@@ -34,6 +40,12 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));        
+
         return true;
     }
     
@@ -69,19 +81,6 @@ public class MainActivity extends Activity {
     
     public void onPhotoTaken() {
     	
-    }
-    
-    public void searchByText(View view) {
-    	View parent = (View) view.getParent();
-    	EditText searchBar = (EditText) parent.findViewById(R.id.search);
-    	if (searchBar == null) {
-    		System.out.println("FUCKFUCKFUCK");
-    	}
-    	String searchTerm = searchBar.getText().toString();
-    	Intent intent = new Intent(this, ResultsActivity.class);
-    	intent.putExtra("searchTerm", searchTerm);
-    	intent.putExtra("source", "text");
-    	startActivity(intent);
     }
     
     /*Called when a user clicks the View Wishlist button*/

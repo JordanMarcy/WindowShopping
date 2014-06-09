@@ -14,5 +14,8 @@
     <string name="title_activity_website">WebsiteActivity</string>
     <string name="title_activity_retailers">RetailersActivity</string>
     <string name="title_activity_barcode_results">BarcodeResultsActivity</string>
+    <string name="search_hint">Search By Keyword</string>
+    <string name="home">Home</string>
+    <string name="similar_title">Similar Products</string>
 
 </resources>
